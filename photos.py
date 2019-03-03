@@ -13,12 +13,12 @@ class Photo:
         Photo.objectCount += 1
         self.photos_with_similar_tags = set()
 
-    def count_of_common_tags_with(self, photo):
+    def __count_of_common_tags_with(self, photo):
         common_tags = self.tags.intersection(photo.tags)
         return len(common_tags)
 
     def calculate_score_for_transition_to(self, other):
-        common_count = self.count_of_common_tags_with(other)
+        common_count = self.__count_of_common_tags_with(other)
         tags_only_in_self = self.number_of_tags - common_count
         tags_only_in_other = other.number_of_tags - common_count
 
@@ -31,7 +31,7 @@ class Photo:
         result += ')\n'
         return result
 
-    def calc_photos_with_similar_tags(self):
+    def __calc_photos_with_similar_tags(self):
         for tag in self.tags:
             photos_with_tag = tag.photos
             self.photos_with_similar_tags.update(photos_with_tag)
@@ -39,7 +39,7 @@ class Photo:
 
     def get_best_unused_transition(self):
         if len(self.photos_with_similar_tags) is 0:
-            self.calc_photos_with_similar_tags()
+            self.__calc_photos_with_similar_tags()
 
         max_points = 0
         best = None
