@@ -1,15 +1,22 @@
 # staralem sie opisywac kod tlumaczac konstrukcje pythonowe
 # w pycharmie: setting->editor->inspections->spelling->typo ustawcie sobie nie sprawdzanie bledow w komentarzach
 
+
 from inputReader import *
+from solution import *
+from score import *
+from statistics import *
 
 
 def main():
     photos, tags = InputReader().read_photos_and_tags()
-    print(photos)
-    print(tags)
-    # statistics = Statistics(photos)
+    # print(photos)
+    # print(tags)
+    # statistics = Statistics(photos, tags)
     # print(statistics)
+    solution = Solution(photos)
+    photo_show = solution.solve()  # utworzyc nowa klase photo_show
+    print(f"Score: {Score.calculate_score(photo_show)}")
 
 
 if __name__ == '__main__':

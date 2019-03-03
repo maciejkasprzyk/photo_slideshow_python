@@ -8,8 +8,21 @@ class Photo:
         self.orientation = orientation
         self.number_of_tags = number_of_tags
         self.tags = set()
-        self.id = Photo.objectCount + 1
+        self.id = Photo.objectCount
+        self.used = False
         Photo.objectCount += 1
+        self.photos_with_similar_tags = set()
+
+    def count_of_common_tags_with(self, photo):
+        common_tags = self.tags.intersection(photo.tags)
+        return len(common_tags)
+
+    def calculate_score_for_transition_to(self, other):
+        common_count = self.count_of_common_tags_with(other)
+        tags_only_in_self = self.number_of_tags - common_count
+        tags_only_in_other = other.number_of_tags - common_count
+
+        return min(common_count, tags_only_in_other, tags_only_in_self)
 
     def __str__(self):  # to taka metoda to_string z javy
         result = f'Photo#{self.id} {self.orientation} {self.number_of_tags} ('
@@ -17,6 +30,27 @@ class Photo:
             result += f'{tag.tag_string} '
         result += ')\n'
         return result
+
+    def calc_photos_with_similar_tags(self):
+        for tag in self.tags:
+            photos_with_tag = tag.photos
+            self.photos_with_similar_tags.update(photos_with_tag)
+        self.photos_with_similar_tags.remove(self)
+
+    def get_best_unused_transition(self):
+        if len(self.photos_with_similar_tags) is 0:
+            self.calc_photos_with_similar_tags()
+
+        max_points = 0
+        best = None
+        for other in self.photos_with_similar_tags:
+            if other.used:
+                continue
+            points = self.calculate_score_for_transition_to(other)
+            if max_points < points:
+                max_points = points
+                best = other
+        return best
 
 
 class Photos(list):  # dziedziczymy po list
