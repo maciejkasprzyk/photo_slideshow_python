@@ -6,16 +6,15 @@ from inputReader import *
 from solution import *
 from score import *
 from statistics import *
-
+from graph import *
 
 def main():
     photos, tags = InputReader().read_photos_and_tags()
     # print(photos)
     # print(tags)
-    # statistics = Statistics(photos, tags)
-    # print(statistics)
-    solution = Solution(photos)
-    photo_show = solution.solve()  # utworzyc nowa klase photo_show
+    statistics = Statistics(photos, tags)
+    print(statistics)
+    photo_show = Solution(photos).solve()  # utworzyc nowa klase photo_show
     print(f"Score: {Score.calculate_score(photo_show)}")
 
 

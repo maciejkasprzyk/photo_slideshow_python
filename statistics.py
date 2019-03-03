@@ -17,13 +17,27 @@ class Statistics:
             else:
                 self.horizontal_count += 1
 
+        self.number_of_different_tags = len(tags)
+
+        self.number_of_tags = 0
+        for photo in photos:
+            self.number_of_tags += photo.number_of_tags
+
+        self.number_of_photos = len(photos)
+        self.average_number_of_tags_on_photo = self.number_of_tags/self.number_of_photos
+
     def __str__(self):
-        result = ""
+        result = "\n"
         for key, value in sorted(self.count_of_tags_that_repeat_key_times.items()):
             result += f"Tagów powstarzajcych sie {key} razy jest {value}\n"
 
+        result +="\n"
         result += f"Number of vertical photos:   {self.vertical_count}\n"
         result += f"Number of horizontal photos: {self.horizontal_count}\n"
+        result += f"Number of different tags: {self.number_of_different_tags}\n"
+        result += f"Number of tags: {self.number_of_tags}\n"
+        result += f"Number of photos: {self.number_of_photos}\n"
+        result += f"Average number of tags on photo: {self.average_number_of_tags_on_photo}\n"
 
 
         return result
